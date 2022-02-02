@@ -31,9 +31,16 @@
     <link href="css/style.css" rel="stylesheet">
     <style>
 body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #f1f1f1;}
+fieldset {border: 2px solid #f1f1f1;
+width: 50%;}
 
-input[type=text], input[type=password] {
+legend {
+  background-color: lightgray;
+  color: white;
+  padding: 5px 10px;
+}
+
+select ,input[type=text], input[type=password] {
   /*width: 100%;*/
   padding: 12px 20px;
   margin: 8px 0;
@@ -49,7 +56,7 @@ button {
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 30%;
+  width: 20%;
 }
 
 button:hover {
@@ -66,10 +73,6 @@ span.psw {
   padding-top: 16px;
 }
 
-h2{
-  padding: 30px;
-}
-
 /* Change styles for span and cancel button on extra small screens */
 
 @media screen and (max-width: 500px) {
@@ -81,11 +84,35 @@ h2{
   
 }
 
+.browser {
+  margin: 10px;
+  padding: 5px;
+}
+
+.browser {
+  background: #FA8072;
+  width: 500px;
+}
+
+/*.browser2 {
+  background: #FA8072;
+  width: 600px;
+}*/
+
+.browser > h2, p {
+  margin: 4px;
+  font-size: 90%;
+}
+
+h2{
+  padding: 30px;
+}
+
 </style>
 </head>
 
 <body>
-<!-- Spinner Start -->
+ <!-- Spinner Start -->
 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
@@ -111,7 +138,7 @@ h2{
                 <div class="dropdown-menu fade-up m-0">
                 <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
                 <a href="viewcontainer.php" class="dropdown-item">Container</a>
-                <a href="shippmententry.php " class="dropdown-item">Shippment Entry</a>
+                <a href="shippmententry.php" class="dropdown-item">Shippment Entry</a>
                 <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
                 </div></div>
                 <div class="nav-item dropdown">
@@ -148,73 +175,209 @@ h2{
     </nav>
     <!-- Navbar End -->
 <center>
-<form action="" method="post">
-     <h2>Add Cargo Type</h2> 
+
+    <h2>Shipping Entry</h2>
+    <form method="post">
+    
+        
+    <fieldset>
+         <legend>  Package Details</legend>
+    <form>
     <table>
-        <tr><th>Cargo type</th>
-        <th><input type="text" name="ctype" required></th></tr>
+	<tr><th>Cargo Type</th><th> <select name="ctype"style="width: 240px;">
+	<option>Select</option>
+    <?php
+    $con = mysqli_connect("localhost","root","","r1");
+    $sql = "SELECT * FROM `cargotype`";
+    $result = mysqli_query($con,$sql);
+    while($row = mysqli_fetch_array($result)) {
+    ?>
+	<option value=" <?php echo $row['cargo_id']; ?>"> <?php echo $row['name']; ?></option>
+    <?php } ?>
+	</select> </th></tr>
+	
+	<tr><th>Weight</th><th><input type="text" name="weight" placeholder="In kilogram"></th></tr>
+	<tr><th>Volume </th><th><input type="text" name="volume" placeholder="In cubic meter"></th></tr>
+	<tr><th>Number of cartoon </th><th><input type="text" name="noofcarton"></th></tr>
+</table>
+    </fieldset>
 
-        <tr><th>Description</th>
-        <th><input type="text" name="description" required></th></tr>
+    <fieldset>
+    <legend>  Sender Details </legend>
+        <table>
+        <tr><th>Name </th><th><input type="text" name="sname"></th></tr>
+        <tr><th>Address</th><th><input type="text" name="saddress"></th></tr>
+        <tr><th>Phone number</th><th><input type="text" name="sphno"></th></tr>
+        <tr><th>Email Id</th><th><input type="text" name="semail"></th></tr>
+    </table>
+    </fieldset>
 
-        <tr><th>Amount</th>
-        <th><input type="text" name="amount" required></th></tr>
-        </table>
-        <button type="submit" name="submit">Submit</button>
-</form>        
+
+	<fieldset>
+    <legend>  Receiver Details </legend>
+    
+    <table>
+	<tr><th>Name </th><th><input type="text" name="name"></th></tr>
+	<tr><th>Country </th><th><select name="country1" style="width: 240px;">
+	<option>Select</option>
+    <?php
+    
+    $sql = "SELECT * FROM `country`";
+    $result = mysqli_query($con,$sql);
+    while($row = mysqli_fetch_array($result)) {
+    ?>
+	<option value=" <?php echo $row['id']; ?>"> <?php echo $row['country']; ?></option>
+    <?php } ?>
+	</select></th></tr>
+    <tr><th>State </th><th><input type="text" name="state1"></th></tr>
+    <tr><th>District </th><th><input type="text" name="district1"></th></tr>
+    <tr><th>City </th><th><input type="text" name="city1"></th></tr>
+    <tr><th>Pincode </th><th><input type="text" name="pin1"></th></tr>
+	<tr><th>Phone Number</th><th><input type="text" name="number"></th></tr>
+	<tr><th>Email Id </th><th><input type="text" name="emailid"></th></tr>
+</table>
+
+    </fieldset>
+   
+    <button type="submit" name="submit" value="submit">Submit</button>
+    
 </center>
 
 <?php
     if (isset($_POST['submit'])){
-        $cname=$_POST['ctype'];
-        $description=$_POST['description'];
-        $amount=$_POST['amount'];
+        
+        $ctype=$_POST['ctype'];
+        $weight=$_POST['weight'];
+        $volume=$_POST['volume'];
+        $noofcarton=$_POST['noofcarton'];
+        $name=$_POST['name'];
+        $country1=$_POST['country1'];
+        $state1=$_POST['state1'];
+        $district1=$_POST['district1'];
+        $city1=$_POST['city1'];
+        $pin1=$_POST['pin1'];
+        $number=$_POST['number'];
+        $emailid=$_POST['emailid'];
+        $sname=$_POST['sname'];
+        $saddress=$_POST['saddress'];
+        $sphno=$_POST['sphno'];
+        $semail=$_POST['semail'];
+        $date=date("Y/m/d");
+        
+        $con = mysqli_connect("localhost","root","","r1");
 
-        $con=mysqli_connect('localhost','root','','r1');
+        $sc = "SELECT * FROM `shippingcharge`";
+        $r_sc = mysqli_query($con,$sc);
+        while($sc_row = mysqli_fetch_array($r_sc)) {
+            $svolume = $sc_row['volume'];
+            $sweight = $sc_row['weight'];
+            $sdistance = $sc_row['distance'];
+            $svat = $sc_row['vat'];
+            $sextra_tax = $sc_row['extra_tax'];
+            $sextra_charge = $sc_row['extra_charge'];
+        }
 
-        $sql="INSERT INTO `cargotype` (`name`,`description`,`cost`) VALUES ('$cname','$description','$amount')";
+        $cost = ($volume * $svolume) + ($weight * $sweight)  + $sdistance + $sextra_charge + $sextra_tax;
 
+        $sql = "SELECT * FROM `customers` where login_id = '$lid'";
+        $result = mysqli_query($con,$sql);
+
+        while($row = mysqli_fetch_array($result)) {
+            $s = $row['cust_id'];
+        }
+      /*  echo $country1;
+    $sql3 = "SELECT * FROM `country` WHERE `country` = 'Bangladesh'";
+    $result3 = mysqli_query($con,$sql3);
+    while($row3 = mysqli_fetch_array($result3)) {
+        $latitude1 = $row3['latitude'];
+        $longitude1 = $row3['longitude'];
+    }
+      // latitude and longitude of Two Points 
+      echo $latitude1;
+      echo $longitude1;
+      
+      $latitude2 = 40.7127; 
+      $longitude2 = -74.0059;  
+      
+      //Converting to radians
+      $longi1 = deg2rad($longitude1); 
+      $longi2 = deg2rad($longitude2); 
+      $lati1 = deg2rad($latitude1); 
+      $lati2 = deg2rad($latitude2); 
+              
+      //Haversine Formula 
+      $difflong = $longi2 - $longi1; 
+      $difflat = $lati2 - $lati1; 
+              
+      $val = pow(sin($difflat/2),2)+cos($lati1)*cos($lati2)*pow(sin($difflong/2),2); 
+              
+      $res1 =3936* (2 * asin(sqrt($val))); //for miles
+      $res2 =6378.8 * (2 * asin(sqrt($val))); //for kilometers
+              
+      //display distance in miles
+      print_r('Distance:'.$res1.' '.'miles '.'OR '.$res2.' '.' kilometers'); */
+    
+
+        $sql = "INSERT INTO `customers`(`name`,`address`,`phone_no`,`emailid`) VALUES ('$sname','$saddress','$sphno','$semail')";
         $result=mysqli_query($con,$sql);
+
+        $sql_1 ="SELECT * FROM `customers`";
+        $result_1=mysqli_query($con,$sql_1);
+
+        while($row = mysqli_fetch_array($result_1)) {
+            $s = $row['cust_id'];
+        }
+
+        $sql1 = "INSERT INTO `booking`(`sender_id`, `r_name`, `r_country`, `r_state`, `r_district`, `r_city`, `r_pincode`, `r_phoneno`, `r_emailid`, `cargo_id`, `weight`, `volume`, `noofcarton`, `date`,`totalcost`) VALUES ('$s','$name','$country1','$state1','$district1','$city1','$pin1','$number','$emailid','$ctype','$weight','$volume','$noofcarton','$date','$cost')";
+        $result1=mysqli_query($con,$sql1);
+
+  
+        
         if($result)
         {
-            echo "<script>alert(' Entered sucessfull');window.location='viewcargotype.php'</script>";
+            
+            $last_id = mysqli_insert_id($con);
+            $_SESSION['last_id1' ] = $last_id;
+            $sql2 = "INSERT INTO `tracking`(`track_id`, `date`, `status`) VALUES ('$last_id','$date','Accepted')";
+            $result2=mysqli_query($con,$sql2);
+            echo "<script>alert(' Entered sucessfull');window.location='shippmententry.php'</script>";
          }
     }
 
 ?>
-
-
+</form>
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s" style="margin-top: 6rem;">
         <div class="container py-5">
-            <div class="row g-5">
+            <div class="row g-1">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>63rd Street, 
+                        Jeddah Sanayia, Saudi Arabia</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+966 56 876 7817</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>rolexcargojeddah@gmail.com</p>
+                    <!--<div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Services</h4>
+                    <h4 class="text-light mb-4" >Services</h4>
                     <a class="btn btn-link" href="">Air Freight</a>
                     <a class="btn btn-link" href="">Sea Freight</a>
                     <a class="btn btn-link" href="">Road Freight</a>
-                    <a class="btn btn-link" href="">Logistic Solutions</a>
-                    <a class="btn btn-link" href="">Industry solutions</a>
+                    <!--<a class="btn btn-link" href="">Logistic Solutions</a>
+                    <a class="btn btn-link" href="">Industry solutions</a>-->
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6" >
                     <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
+                    <a class="btn btn-link" href="#aboutus">About Us</a>
+                    <a class="btn btn-link" href="contact.html">Contact Us</a>
+                    <a class="btn btn-link" href="#services">Our Services</a>
+                    <!--<a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>-->
                 </div>
                 <!--
                 <div class="col-lg-3 col-md-6">
@@ -228,19 +391,21 @@ h2{
             -->
             </div>
         </div>
+        <!--
         <div class="container">
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
+                    <div class="col-md-6 text-center text-md-end">-->
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                        <!--Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
                     </div>
                 </div>
             </div>
         </div>
+    -->
     </div>
     <!-- Footer End -->
 

@@ -33,7 +33,7 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 form {border: 3px solid #f1f1f1;}
 
-input[type=text], input[type=password] {
+input[type=number] {
   /*width: 100%;*/
   padding: 12px 20px;
   margin: 8px 0;
@@ -82,18 +82,120 @@ span.psw {
 
 <body>
 
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow border-top border-5 border-primary sticky-top p-0">
+        <a href="index.html" class="navbar-brand bg-primary d-flex align-items-center px-4 px-lg-5">
+            <h2 class="mb-2 text-white">ROLEX CARGO SERVICES</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href="shippmententry.php " class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href=" " class="dropdown-item">Update Tracking</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href=" " class="dropdown-item">Air Freight</a>
+                
+                <a href=" " class="dropdown-item">Ship Freight</a>
+                </div></div>
+                <a href=" " class="nav-item nav-link">Add Expense</a>
+                <a href=" " class="nav-item nav-link">Report</a>
+               <!-- <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="price.html" class="dropdown-item">Pricing Plan</a>
+                        <a href="feature.html" class="dropdown-item">Features</a>
+                        <a href="quote.html" class="dropdown-item">Free Quote</a>
+                        <a href="team.html" class="dropdown-item">Our Team</a>
+                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                        <a href="404.html" class="dropdown-item">404 Page</a>
+                    </div>
+                </div>-->
+                <a href="index.html" class="nav-item nav-link">Logout</a>
+            </div>
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <?php
+    $con=mysqli_connect('localhost','root','','r1');
+
+    
+    $sql = "SELECT * FROM `shippingcharge`";
+    $result = mysqli_query($con,$sql);
+
+    while($row = mysqli_fetch_array($result)){
+        $vol = $row['volume'];
+        $weight = $row['weight'];
+        $dis = $row['distance'];
+        $vat = $row['vat'];
+        $e_tax = $row['extra_tax'];
+        $e_charge = $row['extra_charge'];
+    }
+
+?>
+
+<?php
+    if(isset($_POST['update'])){
+        
+        $w1 = $_POST['weight'];
+        $v1 = $_POST['volume'];
+        $d1 = $_POST['distance'];
+        $vat1 = $_POST['vat'];
+        $et1 = $_POST['e_tax'];
+        $ec1 = $_POST['e_charge'];
+        
+        $sql2="UPDATE `shippingcharge` SET `weight` = '$w1 ', `volume` = '$v1', `distance` = '$d1', `vat` = '$vat1', `extra_tax` = '$et1', `extra_charge` = '$ec1' WHERE `shippingcharge`.`id` = '1'";
+        $result2=mysqli_query($con,$sql2);
+        echo $result2;
+        if($result2){
+            echo "<script>alert('Updated successfully');window.location='shippingcharge.php'</script>";	
+        }
+    }
+?>
+
+
 <center>
 <h2>Shipping Charge</h2>
+<form method="post">
     <table>
-	    <tr><th>Minimum weight charge </th><th><input type="text" name="weight"></th></tr>
-	    <tr><th>Minimum volume charge </th><th><input type="text" name="volume"></th></tr>
-        <tr><th>Minimum distance charge </th><th><input type="text" name="volume"></th></tr>
-	    <tr><th>Value added tax</th><th> <input type="text" name="vat"></th></tr>
-	    <tr><th>Extra tax charge</th><th><input type="text" name="vat"></th></tr>
-	    <tr><th>Additional charge </th><th><input type="text" name="vat"></th></tr>
+	    <tr><th>Minimum weight charge </th><th><input type="number" name="weight" value="<?php echo $weight; ?>"></th></tr>
+	    <tr><th>Minimum volume charge </th><th><input type="number" name="volume" value="<?php echo $vol; ?>"></th></tr>
+        <tr><th>Minimum distance charge </th><th><input type="number" name="distance" value="<?php echo $dis; ?>"></th></tr>
+	    <tr><th>Value added tax</th><th> <input type="number" name="vat" value="<?php echo $vat; ?>"></th></tr>
+	    <tr><th>Extra tax charge</th><th><input type="number" name="e_tax" value="<?php echo $e_tax; ?>"></th></tr>
+	    <tr><th>Additional charge </th><th><input type="number" name="e_charge" value="<?php echo $e_charge; ?>"></th></tr>
     </table>    
-	<input type="button" name="update" value="Update">
-
+	<button type="submit" name="update">Update</button> 
+</form>
 </center>
 
 
@@ -146,17 +248,7 @@ span.psw {
             </div>
         </div>
         <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
     <!-- Footer End -->

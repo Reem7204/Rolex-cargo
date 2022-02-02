@@ -1,7 +1,3 @@
-<?php
-// Start the session
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,11 +45,12 @@ input[type=text], input[type=password] {
 button {
   background-color: #f44336;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  /*padding: 5px 0;
+  margin: 5px 0;*/
   border: none;
   cursor: pointer;
-  width: 30%;
+  width: 70%;
+  border-radius: 12px;
 }
 
 button:hover {
@@ -61,29 +58,30 @@ button:hover {
 }
 
 
-.container {
-  padding: 10px;
+
+
+table {
+  border-collapse: collapse;
+  width: 97%;
 }
 
-span.psw {
-  float: right;
-  padding-top: 16px;
+th, td {
+  text-align: center;
+  padding: 8px;
 }
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
 
 h2{
   padding: 30px;
 }
 
-/* Change styles for span and cancel button on extra small screens */
-
-@media screen and (max-width: 500px) {
-  /*span.psw {
-     display: block;
-     float: none;
-  }*/
-  
-  
-}
 
 </style>
 </head>
@@ -108,9 +106,33 @@ h2{
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="service.html" class="nav-item nav-link">Services</a>
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href=" shippmententry.php" class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href=" " class="dropdown-item">Update Tracking</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href=" " class="dropdown-item">Air Freight</a>
+                
+                <a href=" " class="dropdown-item">Ship Freight</a>
+                </div></div>
+
+                <a href=" " class="nav-item nav-link">Add Expense</a>
+                <a href=" " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -122,123 +144,120 @@ h2{
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>-->
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-                <a href="login.php" class="nav-item nav-link">Login</a>
+                <a href="index.html" class="nav-item nav-link">Logout</a>
             </div>
-            <h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+012 345 6789</h4>
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
         </div>
     </nav>
     <!-- Navbar End -->
-    
-   <!--Login--> 
-   
-
-<form action="" method="post">
+    <center>
+    <h2>View Request</h2>
+	<table width="200" border="1" align="center">
   
-<center>
-<div class="container"> <h2>Login Form</h2> 
-  
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required><br>
+    <tr>
+      <td>Sl. No.</td>
+      <td>TrackId</td>
+      <td>Sender Details</td>
+      <td>Receiver Details</td>
+      <td>Pickup address</td>
+      <td>Date</td>
+      <td>Package Details</td>
+      <td>Total Cost</td>
+      <td> </td>
+    </tr>
+    <?php
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required><br>
-        
-    <button type="submit" name="login">Login</button><br>
-    
-  </div>
+$con=mysqli_connect('localhost','root','','r1');
 
-  <div class="container" style="background-color:#FFFFFF">
-    <a href="register.php">Register</a><br>
-    Forgot <a href="forgetpassword.php">password?</a>
-  </div>
-</form>
+$sql1 = "SELECT * FROM `tracking` NATURAL JOIN `booking` where tracking.status = 'Requested'";
+$result = mysqli_query($con,$sql1);
 
-</center>
+$s=1;
 
-<!--Validation-->
-<?php
-
-if(isset($_POST["login"]))
-{
-
-    $uname=$_POST['uname'];
-    $psw=$_POST['psw'];
-    $a="<script>alert('";
-    $b="');window.history.back()</script>";
-    
-    if(strlen($psw)<8)
-    {
-    echo "$a Password need atleast 8 characters $b";
-    exit;
-    }
-    else{
-    $con=mysqli_connect('localhost','root','','r1');
-    $sql="SELECT * FROM login WHERE username='$uname' and password='$psw'" ;
-    $results=mysqli_query($con,$sql);
-    $row=mysqli_fetch_array($results);
-    
-   if(mysqli_num_rows($results)==0)
-    {
-    echo "$a Incorrect Username or password $b";
-    exit;
-    }
-    
-    else
-    {
-      if($row['usertype']=='admin')
-      {
-            echo "<script>alert(' Login sucessfull');window.location='viewrequest.php'</script>";
-      }
-      else {
-     
-    $_SESSION['l_id']=$row['login_id'];
-    
-    
-    echo "<script>alert(' Login sucessfull');window.location='bookaservice.php'</script>";
-    exit;
-      }
-    }
-} 
-}
-
+while($row = mysqli_fetch_array($result)) {
 ?>
-<!--Validation End-->
+    <tr>
+      <td> <?php echo $s;$s++; ?> </td>
+      <td> <?php echo $row["track_id"]; ?> </td>
+      <td> <?php
+      $s1 = $row['sender_id'];
+      $sql2 = "SELECT * FROM `customers` WHERE cust_id = '$s1'";
+      $result2 = mysqli_query($con,$sql2);
+      
+      while($row2 = mysqli_fetch_array($result2)) {
+          $n1 = $row2['name'];
+          $a1 = $row2['address'];
+          $p1 = $row2['phone_no'];
+          $e1 = $row2['emailid'];
+      }
+      echo $n1."<br>".$a1."<br>".$p1."<br>".$e1;?> </td>
+      <td><?php
+      echo $row['r_name'].'<br>';
+      echo $row['r_country'].'<br>';
+      echo $row['r_state'].'<br>';
+      echo $row['r_district'].'<br>';
+      echo $row['r_city'].' , '.$row['r_pincode'].'<br>';
+      echo $row['r_phoneno'].'<br>';
+      echo $row['r_emailid']; ?> </td>
+      <td><?php
+      echo $row['p_country'].'<br>';
+      echo $row['p_state'].'<br>';
+      echo $row['p_district'].'<br>';
+      echo $row['p_city'].' , '.$row['p_pincode'].'<br>';
+       ?> </td>
+      <td><?php echo $row['date']; ?> </td>
+      <td><?php
+      $ct = $row['cargo_id'];
+      $sql5 = "SELECT * FROM `cargotype` WHERE cargo_id = '$ct'";
+      $result5 = mysqli_query($con,$sql5);
+      while($row5 = mysqli_fetch_array($result5)) {
+          $ct1 = $row5['name'];
+      }
+      echo "Cargo Type:".$ct1."<br>";
+      echo "Weight : ".$row['weight']."<br>";
+      echo "Volume : ".$row['volume']."<br>";
+      echo "Carton : ".$row['noofcarton']."<br>"; ?> </td>
+      <td></td>
+      <td><button name="accept" value="accept"><a style='color:white;' href="acceptrequest.php?track_id=<?php echo $row['track_id']; ?>">Accept</button><br><br>
+		<button name="reject" value="Reject"><a style='color:white;' href="rejectrequest.php?track_id=<?php echo $row['track_id']; ?>">Reject</td>
+    </tr>
+  <?php } ?>
+  
+</table>
+<center>
 
-<!--Login End-->
-
-   
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s" style="margin-top: 6rem;">
         <div class="container py-5">
-            <div class="row g-5">
+            <div class="row g-1">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>63rd Street, 
+                        Jeddah Sanayia, Saudi Arabia</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+966 56 876 7817</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>rolexcargojeddah@gmail.com</p>
+                    <!--<div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Services</h4>
+                    <h4 class="text-light mb-4" >Services</h4>
                     <a class="btn btn-link" href="">Air Freight</a>
                     <a class="btn btn-link" href="">Sea Freight</a>
                     <a class="btn btn-link" href="">Road Freight</a>
-                    <a class="btn btn-link" href="">Logistic Solutions</a>
-                    <a class="btn btn-link" href="">Industry solutions</a>
+                    <!--<a class="btn btn-link" href="">Logistic Solutions</a>
+                    <a class="btn btn-link" href="">Industry solutions</a>-->
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6" >
                     <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
+                    <a class="btn btn-link" href="#aboutus">About Us</a>
+                    <a class="btn btn-link" href="contact.html">Contact Us</a>
+                    <a class="btn btn-link" href="#services">Our Services</a>
+                    <!--<a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>-->
                 </div>
                 <!--
                 <div class="col-lg-3 col-md-6">
@@ -252,19 +271,21 @@ if(isset($_POST["login"]))
             -->
             </div>
         </div>
+        <!--
         <div class="container">
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
+                    <div class="col-md-6 text-center text-md-end">-->
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                        <!--Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
                     </div>
                 </div>
             </div>
         </div>
+    -->
     </div>
     <!-- Footer End -->
 

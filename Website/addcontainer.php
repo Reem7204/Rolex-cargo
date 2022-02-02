@@ -104,13 +104,30 @@ h2{
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="index.html" class="nav-item nav-link">Dashboard</a>
-                <a href=" " class="nav-item nav-link">Requests</a>
-                <a href="viewcargotype.php" class="nav-item nav-link">Cargo Type</a>
-                <a href="viewcontainer.php" class="nav-item nav-link">Container</a>
-                <a href=" " class="nav-item nav-link">Add Shippment Entry</a>
-                <a href=" " class="nav-item nav-link">Shipping Charge</a>
-                <a href=" " class="nav-item nav-link">Update Tracking</a>
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href=" shippmententry.php" class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href=" " class="dropdown-item">Update Tracking</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href=" " class="dropdown-item">Air Freight</a>
+                
+                <a href=" " class="dropdown-item">Ship Freight</a>
+                </div></div>
                 <a href=" " class="nav-item nav-link">Add Expense</a>
                 <a href=" " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
@@ -126,7 +143,7 @@ h2{
                 </div>-->
                 <a href="index.html" class="nav-item nav-link">Logout</a>
             </div>
-            
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
         </div>
     </nav>
     <!-- Navbar End -->
@@ -136,6 +153,8 @@ h2{
     <table>
 
     
+    <tr><th>Container number</th>
+        <th><input type="text" name="cnum" required></th></tr>
 
         <tr><th>Type</th>
         <th><input type="text" name="ctype" required></th></tr>
@@ -147,7 +166,7 @@ h2{
         <th><input type="text" name="destination" required></th></tr>
 
         <tr><th>Departure date</th>
-        <th><input type="text" name="d_date" required></th></tr>
+        <th><input type="date" name="d_date" required></th></tr>
         </table>
         <button type="submit" name="submit">Submit</button>
 </form>        
@@ -155,6 +174,7 @@ h2{
 
 <?php
     if (isset($_POST['submit'])){
+        $cnum=$_POST['cnum'];
         $ctype=$_POST['ctype'];
         $destination=$_POST['destination'];
         $feet=$_POST['feet'];
@@ -162,7 +182,7 @@ h2{
         $c_num=$_POST['cnum'];
         $con=mysqli_connect('localhost','root','','r1');
 
-        $sql="INSERT INTO `container` (`type`,`destination`,`feet`,`d_date`) VALUES ('$ctype','$destination','$feet','$d_date')";
+        $sql="INSERT INTO `container` ( `type`, `destination`, `feet`, `d_date`, `co_number`) VALUES ('$ctype','$destination','$feet','$d_date','$cnum')";
 
         $result=mysqli_query($con,$sql);
         if($result)

@@ -1,7 +1,3 @@
-<?php
-// Start the session
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,11 +45,12 @@ input[type=text], input[type=password] {
 button {
   background-color: #f44336;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  /*padding: 5px 0;
+  margin: 5px 0;*/
   border: none;
   cursor: pointer;
-  width: 30%;
+  width: 40%;
+  border-radius: 12px;
 }
 
 button:hover {
@@ -61,36 +58,37 @@ button:hover {
 }
 
 
-.container {
-  padding: 10px;
+
+
+table {
+  border-collapse: collapse;
+  width: 70%;
 }
 
-span.psw {
-  float: right;
-  padding-top: 16px;
+th, td {
+  text-align: center;
+  padding: 8px;
 }
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
 
 h2{
   padding: 30px;
 }
 
-/* Change styles for span and cancel button on extra small screens */
-
-@media screen and (max-width: 500px) {
-  /*span.psw {
-     display: block;
-     float: none;
-  }*/
-  
-  
-}
 
 </style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -108,9 +106,32 @@ h2{
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="service.html" class="nav-item nav-link">Services</a>
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href="shippmententry.php " class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href=" " class="dropdown-item">Update Tracking</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href=" " class="dropdown-item">Air Freight</a>
+                
+                <a href=" " class="dropdown-item">Ship Freight</a>
+                </div></div>
+                <a href=" " class="nav-item nav-link">Add Expense</a>
+                <a href=" " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -122,92 +143,54 @@ h2{
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>-->
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-                <a href="login.php" class="nav-item nav-link">Login</a>
+                <a href="index.html" class="nav-item nav-link">Logout</a>
             </div>
-            <h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+012 345 6789</h4>
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
         </div>
     </nav>
     <!-- Navbar End -->
     
-   <!--Login--> 
-   
-
-<form action="" method="post">
-  
 <center>
-<div class="container"> <h2>Login Form</h2> 
+    <form action="" method="get">
+<div class="container">
+<h2>Clearance Documents</h2>
+<!--Search: <input type="text" name="search" style="width: 200px;height: 30px;border: radius 12px;" ><br>-->
+	<table solid border="1">
   
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required><br>
+  
+    <tr>
+      <td>Sl.No.</td>
+      <td>Track Id</td>
+      
+      <td> </td>
+      
+    </tr>
+    <?php
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required><br>
-        
-    <button type="submit" name="login">Login</button><br>
+$con=mysqli_connect('localhost','root','','r1');
+
+$sql="SELECT * FROM booking WHERE`track_id` IN (SELECT `track_id` FROM `tracking` WHERE `status`='Accepted') AND `track_id` NOT IN (SELECT track_id FROM `document`)";
+
+$result = mysqli_query($con,$sql);
+$s=1;
+
+while($row = mysqli_fetch_array($result)) {
+?>
+    <tr><td><?php echo $s;$s++; ?></td>
+    <td><?php echo $row["track_id"]; ?></td>
+    <td><button name='update'><a style='color:white;' href='uploaddoc.php?id=<?php echo $row['track_id'];?>'>Upload</a></button></td></tr>
+ <?php } ?>
+ 
     
-  </div>
-
-  <div class="container" style="background-color:#FFFFFF">
-    <a href="register.php">Register</a><br>
-    Forgot <a href="forgetpassword.php">password?</a>
-  </div>
+</table>
+</div>
 </form>
-
 </center>
 
-<!--Validation-->
-<?php
 
-if(isset($_POST["login"]))
-{
 
-    $uname=$_POST['uname'];
-    $psw=$_POST['psw'];
-    $a="<script>alert('";
-    $b="');window.history.back()</script>";
-    
-    if(strlen($psw)<8)
-    {
-    echo "$a Password need atleast 8 characters $b";
-    exit;
-    }
-    else{
-    $con=mysqli_connect('localhost','root','','r1');
-    $sql="SELECT * FROM login WHERE username='$uname' and password='$psw'" ;
-    $results=mysqli_query($con,$sql);
-    $row=mysqli_fetch_array($results);
-    
-   if(mysqli_num_rows($results)==0)
-    {
-    echo "$a Incorrect Username or password $b";
-    exit;
-    }
-    
-    else
-    {
-      if($row['usertype']=='admin')
-      {
-            echo "<script>alert(' Login sucessfull');window.location='viewrequest.php'</script>";
-      }
-      else {
-     
-    $_SESSION['l_id']=$row['login_id'];
-    
-    
-    echo "<script>alert(' Login sucessfull');window.location='bookaservice.php'</script>";
-    exit;
-      }
-    }
-} 
-}
 
-?>
-<!--Validation End-->
 
-<!--Login End-->
-
-   
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s" style="margin-top: 6rem;">
         <div class="container py-5">

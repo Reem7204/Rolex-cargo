@@ -152,7 +152,7 @@ span.psw {
     <th><input type="password" name="psw" required></th></tr>
 
     <tr><th><label for="cpsw"><b>Confirm Password &nbsp</b></label></th>
-    <th><input type="text" name="cpsw" required><br></th></tr>
+    <th><input type="password" name="cpsw" required><br></th></tr>
         
     <tr><th></th><th><button type="submit" name="submit">Submit</button><br></th></tr>
 </table>
