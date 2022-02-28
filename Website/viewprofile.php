@@ -1,3 +1,7 @@
+<?php
+// Start the session
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +33,86 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+fieldset {border: 2px solid #f1f1f1;
+width: 50%;}
+
+legend {
+  background-color: lightgray;
+  color: white;
+  padding: 5px 10px;
+}
+
+select ,input[type=text], input[type=password] {
+  /*width: 100%;*/
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #f44336;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+
+.container {
+  padding: 10px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+
+@media screen and (max-width: 500px) {
+  /*span.psw {
+     display: block;
+     float: none;
+  }*/
+  
+  
+}
+
+.browser {
+  margin: 10px;
+  padding: 5px;
+}
+
+.browser {
+  background: #FA8072;
+  width: 500px;
+}
+
+/*.browser2 {
+  background: #FA8072;
+  width: 600px;
+}*/
+
+.browser > h2, p {
+  margin: 4px;
+  font-size: 90%;
+}
+
+h2{
+  padding: 30px;
+}
+
+</style>
 </head>
 
 <body>
@@ -51,10 +135,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <!--<a href="index.html" class="nav-item nav-link">Home</a>-->
+                <a href="index.html" class="nav-item nav-link">Home</a>
                 <a href="bookaservice.php" class="nav-item nav-link">Book a service</a>
                 <a href="viewtracking.php" class="nav-item nav-link">View Tracking</a>
-                <a href="#services" class="nav-item nav-link">View History</a>
+                <a href="viewhistory.php" class="nav-item nav-link">View History</a>
                 <a href="viewprofile.php" class="nav-item nav-link">View Profile</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -75,7 +159,92 @@
     </nav>
     <!-- Navbar End -->
 
-<center><h1 style="padding: 60px;">WELCOME</h1></center>
+    <form action="" method="post">
+  
+  <center>
+  <div class="container"> <h2>Your Profile</h2> 
+    <table>
+    <?php
+    
+    $lid=$_SESSION['l_id'];
+    $con=mysqli_connect('localhost','root','','r1');
+
+  
+    
+    $sql = "SELECT * FROM `customers` where login_id = '$lid'";
+    $result = mysqli_query($con,$sql);
+
+    while($row = mysqli_fetch_array($result)){
+
+?>
+      <tr><th><label for="name"><b>Name</b></label></th>
+      <th><input type="text" name="name" value="<?php echo $row['name']; ?>" required pattern="[A-Z a-z]{3,25}"></th></tr>
+      
+      <tr><th><label for="address"><b>Address</b></label></th>
+      <th><input type="text" name="address" value="<?php echo $row['address']; ?>" required></th></tr>
+  
+      <tr><th><label for="phno"><b>Phone number</b></label></th>
+      <th><input type="text" name="phno" value="<?php echo $row['phone_no']; ?>" required pattern="[0-9]{10}"></th></tr>
+  
+      <tr><th><label for="emailid"><b>Email Id</b></label></th>
+      <th><input type="text" name="emailid" value="<?php echo $row['emailid']; ?>" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></th></tr>
+  <?php
+    }
+    $sql2 = "SELECT * FROM `login` WHERE `login_id`='$lid'";
+    $result2 = mysqli_query($con,$sql2);
+
+    while($row2 = mysqli_fetch_array($result2)){
+    ?>
+      <tr><th><label for="uname"><b>Username</b></label></th>
+      <th><input type="text" name="uname" value="<?php echo $row2['username']; ?>" required></th></tr>
+  
+      <tr><th><label for="psw"><b>New Password</b></label></th>
+      <th><input type="password" name="psw"  ></th></tr>
+
+      <tr><th><label for="cpsw"><b>Confirm Password</b></label></th>
+      <th><input type="password" name="cpsw"  ></th></tr>
+  
+     <?php
+     }
+     ?>     
+      <tr><th></th><th><button type="submit" name="submit">Update</button><br></th></tr>
+  </table>
+  </form>
+  <?php
+  if(isset($_POST['submit'])){
+        
+    $n1 = $_POST['name'];
+    $a1 = $_POST['address'];
+    $p1 = $_POST['phno'];
+    $e1 = $_POST['emailid'];
+    $u1 = $_POST['uname'];
+    $pw = $_POST['psw'];
+    $cpw = $_POST['cpsw'];
+
+    if(strlen($pw)<8){
+echo "<script>alert('Password must contain atleast 8 characters');</script>";
+    }
+    elseif($pw!=$cpw)
+    {
+    echo "$a confirm password incorrect $b";
+    
+    }
+    else {
+    $sql3="UPDATE `customers` SET `name`='$n1',`address`='$a1',`phone_no`='$p1',`emailid`='$e1' WHERE `login_id`='$lid'";
+    $result3=mysqli_query($con,$sql3);
+
+    
+
+    $sql4="UPDATE `login` SET `username`='$u1',`password`='$pw' WHERE `login_id`='$lid'";
+    $result4=mysqli_query($con,$sql4);
+
+    if($result4){
+        echo "<script>alert('Updated successfully');window.location='viewprofile.php'</script>";	
+    }
+  }
+}
+  ?>
+  </center>
 
 
 <!-- Footer Start -->
@@ -160,7 +329,3 @@
 </body>
 
 </html>
-
-
-
-

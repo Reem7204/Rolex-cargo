@@ -140,23 +140,32 @@ h2{
                 <a href="viewcontainer.php" class="dropdown-item">Container</a>
                 <a href="shippmententry.php" class="dropdown-item">Shippment Entry</a>
                 <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
+                <a href="addexpense.php " class="dropdown-item">Expense</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
                 <div class="dropdown-menu fade-up m-0">
                 <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
                 
-                <a href=" " class="dropdown-item">Update Tracking</a>
+                <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
+                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
                 <div class="dropdown-menu fade-up m-0">
-                <a href=" " class="dropdown-item">Air Freight</a>
+                <a href="airfreight.php " class="dropdown-item">Air Freight</a>
                 
-                <a href=" " class="dropdown-item">Ship Freight</a>
+                <a href="shipfreight.php " class="dropdown-item">Ship Freight</a>
                 </div></div>
-                <a href=" " class="nav-item nav-link">Add Expense</a>
-                <a href=" " class="nav-item nav-link">Report</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">View</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="warehousepackages.php " class="dropdown-item">Warehouse packages</a>
+                <a href="viewhistory.php " class="dropdown-item">History</a>
+                
+                </div></div>
+                <a href="report.php  " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -196,19 +205,19 @@ h2{
     <?php } ?>
 	</select> </th></tr>
 	
-	<tr><th>Weight</th><th><input type="text" name="weight" placeholder="In kilogram"></th></tr>
-	<tr><th>Volume </th><th><input type="text" name="volume" placeholder="In cubic meter"></th></tr>
-	<tr><th>Number of cartoon </th><th><input type="text" name="noofcarton"></th></tr>
+	<tr><th>Weight</th><th><input type="text" name="weight" placeholder="In kilogram" required pattern="[0-9]{1,3}"></th></tr>
+	<tr><th>Volume </th><th><input type="text" name="volume" placeholder="In cubic meter" required pattern="[0-9]{1,3}"></th></tr>
+	<tr><th>Number of cartoon </th><th><input type="text" name="noofcarton" required pattern="[0-9]{1,3}"></th></tr>
 </table>
     </fieldset>
 
     <fieldset>
     <legend>  Sender Details </legend>
         <table>
-        <tr><th>Name </th><th><input type="text" name="sname"></th></tr>
+        <tr><th>Name </th><th><input type="text" name="sname" required pattern="[A-Z a-z]{3,25}"></th></tr>
         <tr><th>Address</th><th><input type="text" name="saddress"></th></tr>
-        <tr><th>Phone number</th><th><input type="text" name="sphno"></th></tr>
-        <tr><th>Email Id</th><th><input type="text" name="semail"></th></tr>
+        <tr><th>Phone number</th><th><input type="text" name="sphno" required pattern="[6789][0-9]{9}"></th></tr>
+        <tr><th>Email Id</th><th><input type="text" name="semail" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></th></tr>
     </table>
     </fieldset>
 
@@ -229,12 +238,12 @@ h2{
 	<option value=" <?php echo $row['id']; ?>"> <?php echo $row['country']; ?></option>
     <?php } ?>
 	</select></th></tr>
-    <tr><th>State </th><th><input type="text" name="state1"></th></tr>
-    <tr><th>District </th><th><input type="text" name="district1"></th></tr>
-    <tr><th>City </th><th><input type="text" name="city1"></th></tr>
+    <tr><th>State </th><th><input type="text" name="state1" pattern="[A-Z a-z]{3,25}"></th></tr>
+    <tr><th>District </th><th><input type="text" name="district1" pattern="[A-Z a-z]{3,25}"></th></tr>
+    <tr><th>City </th><th><input type="text" name="city1" pattern="[A-Z a-z]{3,25}"></th></tr>
     <tr><th>Pincode </th><th><input type="text" name="pin1"></th></tr>
-	<tr><th>Phone Number</th><th><input type="text" name="number"></th></tr>
-	<tr><th>Email Id </th><th><input type="text" name="emailid"></th></tr>
+	<tr><th>Phone Number</th><th><input type="text" name="number" required pattern="[6789][0-9]{9}"></th></tr>
+	<tr><th>Email Id </th><th><input type="text" name="emailid" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></th></tr>
 </table>
 
     </fieldset>
@@ -333,7 +342,7 @@ h2{
 
   
         
-        if($result)
+        if($result1)
         {
             
             $last_id = mysqli_insert_id($con);

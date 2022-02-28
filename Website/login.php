@@ -188,14 +188,14 @@ if(isset($_POST["login"]))
     {
       if($row['usertype']=='admin')
       {
-            echo "<script>alert(' Login sucessfull');window.location='viewrequest.php'</script>";
+            echo "<script>alert(' Login sucessfull');window.location='index_admin.php'</script>";
       }
       else {
      
     $_SESSION['l_id']=$row['login_id'];
     
     
-    echo "<script>alert(' Login sucessfull');window.location='bookaservice.php'</script>";
+    echo "<script>alert(' Login sucessfull');window.location='index_customer.php'</script>";
     exit;
       }
     }

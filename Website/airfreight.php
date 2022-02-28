@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,6 +61,7 @@ button:hover {
 
 
 table {
+    border: 1px solid ;
   border-collapse: collapse;
   width: 70%;
 }
@@ -88,6 +88,7 @@ h2{
 </head>
 
 <body>
+
 <!-- Spinner Start -->
 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -159,50 +160,67 @@ h2{
         </div>
     </nav>
     <!-- Navbar End -->
-    
+
+
 <center>
-    <form action="" method="get">
-<div class="container">
-<h2>View Cargo Type</h2>
-<!--Search: <input type="text" name="search" style="width: 200px;height: 30px;border: radius 12px;" ><br>-->
-	<table solid border="1">
-  
-  <caption style="caption-side:top;text-align:right;"><button style="background-color: grey;width: 20%" name="add"><a href="addcargotype.php" style="color: black;">+ Add new type</a></button></caption>
-    <tr>
-      <td><b>Sl.No.</b></td>
-      <td><b>Cargo type</b></td>
-      <td><b>Description</b></td>
-      <td><b>Amount</b></td>
-      <td></td>
-    </tr>
+<h2>Air Cargo Transportation</h2>
+<form method="POST" action="">
+    Destination <select name="dest" style="width: 240px;"> 
+	<option> </option>
+    <?php
     
-      <?php
+    $con = mysqli_connect("localhost","root","","r1");
+    $sql = "SELECT * FROM `booking`";
+    $result = mysqli_query($con,$sql);
+    while($row = mysqli_fetch_array($result)) {
+    ?>
+	<option value=" <?php echo $row['r_country']; ?>"> <?php echo $row['r_country']; ?></option>
+    <?php } ?>
+	</select> <button type="submit" name="submit" value="submit" style="width: 7%">Search</button><br><br>
+    Country :
+   <table>
+       <tr>
+           <td></td>
+           <td><b>Track id</b></td>
+           <td><b>Weight</b></td>
+           <td><b>Volume</b></td>
+        </tr>
+        
+        <?php
 
-$con=mysqli_connect('localhost','root','','r1');
 
-$sql="SELECT * FROM cargotype";
+$dest='India';
+echo $dest."<br>";
 
-$result = mysqli_query($con,$sql);
+
+$sql2 = "SELECT * FROM `booking` WHERE r_country=' $dest'";
+
+$result2 = mysqli_query($con,$sql2);
 $s=1;
 
-while($row = mysqli_fetch_array($result)) {
-?>
-    <tr><td><?php echo $s;$s++; ?></td>
-    <td><?php echo $row["name"]; ?></td>
-    <td><?php echo $row["description"]; ?></td>
-    <td><?php echo $row["cost"]; ?></td>
+while($row2 = mysqli_fetch_array($result2)) {
     
-    <td><button name='update'><a style='color:white;' href='updatecargotype.php?cargo_id=<?php echo $row['cargo_id'];?>'>Update</a></button> <button name='delete'><a style='color:white;' href="ctypedelete.php?id=<?php echo $row['cargo_id']; ?>">Delete</button></td></tr>
+?>
+    <tr><td><input type="checkbox" value="<?php echo $row['track_id']; ?>" name="id[]"></td>
+    <td><?php echo $row2["track_id"]; ?></td>
+    <td><?php echo $row2["weight"]; ?></td>
+    <td><?php echo $row2["volume"]; ?></td>
+    </tr>
 <?php  
 }
+$sql3 ="SELECT SUM(`weight`) FROM `booking` WHERE r_country='$dest'";
+$result3 = mysqli_query($con,$sql3);
+while($row3 = mysqli_fetch_array($result3)){
+    $w1=$row3['SUM(`weight`)'];
+}
+echo "Total weight : ".$w1;
+
 ?>
- 
- 
+    </table>
     
-</table>
-</div>
 </form>
 </center>
+
 
 
 
@@ -253,17 +271,7 @@ while($row = mysqli_fetch_array($result)) {
             </div>
         </div>
         <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
     <!-- Footer End -->

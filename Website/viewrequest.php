@@ -49,7 +49,7 @@ button {
   margin: 5px 0;*/
   border: none;
   cursor: pointer;
-  width: 70%;
+  
   border-radius: 12px;
 }
 
@@ -115,24 +115,33 @@ h2{
                 <a href="viewcontainer.php" class="dropdown-item">Container</a>
                 <a href=" shippmententry.php" class="dropdown-item">Shippment Entry</a>
                 <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
+                <a href="addexpense.php " class="dropdown-item">Expense</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
                 <div class="dropdown-menu fade-up m-0">
                 <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
                 
-                <a href=" " class="dropdown-item">Update Tracking</a>
+                <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
+                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
                 <div class="dropdown-menu fade-up m-0">
-                <a href=" " class="dropdown-item">Air Freight</a>
+                <a href="airfreight.php " class="dropdown-item">Air Freight</a>
                 
-                <a href=" " class="dropdown-item">Ship Freight</a>
+                <a href="shipfreight.php " class="dropdown-item">Ship Freight</a>
                 </div></div>
 
-                <a href=" " class="nav-item nav-link">Add Expense</a>
-                <a href=" " class="nav-item nav-link">Report</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">View</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="warehousepackages.php " class="dropdown-item">Warehouse packages</a>
+                <a href="viewhistory.php " class="dropdown-item">History</a>
+                
+                </div></div>
+                <a href="report.php  " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -155,14 +164,14 @@ h2{
 	<table width="200" border="1" align="center">
   
     <tr>
-      <td>Sl. No.</td>
-      <td>TrackId</td>
-      <td>Sender Details</td>
-      <td>Receiver Details</td>
-      <td>Pickup address</td>
-      <td>Date</td>
-      <td>Package Details</td>
-      <td>Total Cost</td>
+      <td><b>Sl. No.</b></td>
+      <td><b>TrackId</b></td>
+      <td><b>Sender Details</b></td>
+      <td><b>Receiver Details</b></td>
+      <td><b>Pickup address</b></td>
+      <td><b>Date</b></td>
+      <td><b>Package Details</b></td>
+      <td><b>Total Cost</b></td>
       <td> </td>
     </tr>
     <?php
@@ -178,7 +187,7 @@ while($row = mysqli_fetch_array($result)) {
 ?>
     <tr>
       <td> <?php echo $s;$s++; ?> </td>
-      <td> <?php echo $row["track_id"]; ?> </td>
+      <td><a href="trackid_info.php?track_id=<?php echo $row['track_id']; ?>"> <?php echo $row["track_id"]; ?> </a></td>
       <td> <?php
       $s1 = $row['sender_id'];
       $sql2 = "SELECT * FROM `customers` WHERE cust_id = '$s1'";
@@ -217,13 +226,29 @@ while($row = mysqli_fetch_array($result)) {
       echo "Weight : ".$row['weight']."<br>";
       echo "Volume : ".$row['volume']."<br>";
       echo "Carton : ".$row['noofcarton']."<br>"; ?> </td>
-      <td></td>
-      <td><button name="accept" value="accept"><a style='color:white;' href="acceptrequest.php?track_id=<?php echo $row['track_id']; ?>">Accept</button><br><br>
+      <td><?php echo $row['totalcost'] ?></td>
+      <td><button name="accept" value="accept" onclick="onsubmit()"><a style='color:white;' href="acceptrequest.php?track_id=<?php echo $row['track_id']; ?>">Accept</button><br><br>
 		<button name="reject" value="Reject"><a style='color:white;' href="rejectrequest.php?track_id=<?php echo $row['track_id']; ?>">Reject</td>
     </tr>
   <?php } ?>
   
 </table>
+<!--<script>
+    function onsubmit(){
+        var sel = document.createElement("select");
+        var opt1 = document.createElement("option");
+        var opt2 = document.createElement("option");
+
+        opt1.value = "1";
+        opt1.text = "Option: Value 1";
+
+        opt2.value = "2";
+        opt2.text = "Option: Value 2";
+
+        sel.add(opt1, null);
+        sel.add(opt2, null);
+    }
+</script>-->
 <center>
 
 <!-- Footer Start -->

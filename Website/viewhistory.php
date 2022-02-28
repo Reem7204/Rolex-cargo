@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,7 +49,7 @@ button {
   margin: 5px 0;*/
   border: none;
   cursor: pointer;
-  width: 40%;
+  
   border-radius: 12px;
 }
 
@@ -63,7 +62,7 @@ button:hover {
 
 table {
   border-collapse: collapse;
-  width: 70%;
+  width: 100%;
 }
 
 th, td {
@@ -71,7 +70,7 @@ th, td {
   padding: 8px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+/*tr:nth-child(even){background-color: #f2f2f2}*/
 
 th {
   background-color: #04AA6D;
@@ -114,7 +113,7 @@ h2{
                 <div class="dropdown-menu fade-up m-0">
                 <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
                 <a href="viewcontainer.php" class="dropdown-item">Container</a>
-                <a href="shippmententry.php " class="dropdown-item">Shippment Entry</a>
+                <a href=" shippmententry.php" class="dropdown-item">Shippment Entry</a>
                 <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
                 <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
                 <a href="addexpense.php " class="dropdown-item">Expense</a>
@@ -159,45 +158,68 @@ h2{
         </div>
     </nav>
     <!-- Navbar End -->
-    
 <center>
     <form action="" method="get">
 <div class="container">
-<h2>View Cargo Type</h2>
-<!--Search: <input type="text" name="search" style="width: 200px;height: 30px;border: radius 12px;" ><br>-->
+<h2>View History</h2>
+<!--Search: <input type="text" name="search" style="width: 200px;height: 30px;border: radius 12px;"><br>-->
 	<table solid border="1">
   
-  <caption style="caption-side:top;text-align:right;"><button style="background-color: grey;width: 20%" name="add"><a href="addcargotype.php" style="color: black;">+ Add new type</a></button></caption>
+  
     <tr>
       <td><b>Sl.No.</b></td>
-      <td><b>Cargo type</b></td>
-      <td><b>Description</b></td>
-      <td><b>Amount</b></td>
-      <td></td>
+      <td><b>Track id</b></td>
+      <td><b>Date</b></td>
+      <td><b>Status</b></td>
+      <!--<td><b>Document description</b></td>-->
+      <td><b>Document</b></td>
+      <td><b>Delivery note</b></td>
+      <td><b>Tracking history</b></td>
     </tr>
     
       <?php
 
 $con=mysqli_connect('localhost','root','','r1');
 
-$sql="SELECT * FROM cargotype";
-
+$sql = "SELECT * FROM `booking`";
 $result = mysqli_query($con,$sql);
+
 $s=1;
 
 while($row = mysqli_fetch_array($result)) {
 ?>
     <tr><td><?php echo $s;$s++; ?></td>
-    <td><?php echo $row["name"]; ?></td>
-    <td><?php echo $row["description"]; ?></td>
-    <td><?php echo $row["cost"]; ?></td>
+    <td><?php echo $row["track_id"] ?></td>
     
-    <td><button name='update'><a style='color:white;' href='updatecargotype.php?cargo_id=<?php echo $row['cargo_id'];?>'>Update</a></button> <button name='delete'><a style='color:white;' href="ctypedelete.php?id=<?php echo $row['cargo_id']; ?>">Delete</button></td></tr>
-<?php  
+<?php
+$t1 = $row['track_id'];
+$sql2 = "SELECT * FROM `tracking` WHERE `track_id`='$t1'";
+$result2 = mysqli_query($con,$sql2);
+while($row2 = mysqli_fetch_array($result2)){
+    ?> 
+    <td><?php echo $row2["date"]; ?></td>
+    <td><?php echo $row2["status"];  ?></td>
+    <?php
+$sql3 = "SELECT * FROM `document` WHERE `track_id`='$t1'";
+$result3 = mysqli_query($con,$sql3);
+while($row3 = mysqli_fetch_array($result3)){}
+    ?> 
+    <!--<td><?php 
+    /*if($row3['description'] == " "){
+        echo "-";}
+        else{echo $row3['description']; }}*/?></td>-->
+    <td><button name='doc'><a style='color:white;' href='track_history.php?id=<?php echo $row['track_id'];?>' >View</a></button></td>
+    
+    <td><button name='d_doc'><a style='color:white;' href='updatecontainer.php?co_id=<?php echo $row['track_id']; ?>' >View</a></button></td>
+    <td><button name='t_history'><a style='color:white;' href='track_history.php?id=<?php echo $row['track_id'];?>'>View</a></button></td></tr>
+<?php 
+
+}
 }
 ?>
  
  
+
     
 </table>
 </div>

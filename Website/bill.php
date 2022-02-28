@@ -135,11 +135,11 @@ h2{
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link">Home</a>
-                <a href="#aboutus" class="nav-item nav-link">Book a service</a>
-                <a href="#services" class="nav-item nav-link">View Tracking</a>
-                <a href="#services" class="nav-item nav-link">View History</a>
-                <a href="#services" class="nav-item nav-link">View Profile</a>
+            <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="bookaservice.php" class="nav-item nav-link">Book a service</a>
+                <a href="viewtracking.php" class="nav-item nav-link">View Tracking</a>
+                <a href="viewhistory.php" class="nav-item nav-link">View History</a>
+                <a href="viewprofile.php" class="nav-item nav-link">View Profile</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -175,7 +175,7 @@ h2{
             ?>
     
     <table>
-        <tr><th>Cargo type : </th><th><?php echo $row["cargo_id"]; ?></th></tr>
+       
         <tr><th>Weight : </th><th><?php echo $row["weight"]; ?></th></tr>
         <tr><th>Volume : </th><th><?php echo $row["volume"]; ?></th></tr>
         <tr><th>No. of carton : </th><th><?php echo $row["noofcarton"]; ?></th></tr>

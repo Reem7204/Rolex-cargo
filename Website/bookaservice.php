@@ -135,11 +135,11 @@ h2{
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link">Home</a>
-                <a href="#aboutus" class="nav-item nav-link">Book a service</a>
-                <a href="#services" class="nav-item nav-link">View Tracking</a>
+                <!--<a href="index.html" class="nav-item nav-link">Home</a>-->
+                <a href="bookaservice.php" class="nav-item nav-link">Book a service</a>
+                <a href="viewtracking.php" class="nav-item nav-link">View Tracking</a>
                 <a href="#services" class="nav-item nav-link">View History</a>
-                <a href="#services" class="nav-item nav-link">View Profile</a>
+                <a href="viewprofile.php" class="nav-item nav-link">View Profile</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -179,9 +179,9 @@ h2{
     <?php } ?>
 	</select> </th></tr>
 	
-	<tr><th>Weight</th><th><input type="text" name="weight" placeholder="In kilogram"> </th></tr>
-	<tr><th>Volume </th><th><input type="text" name="volume" placeholder="In cubic meter"></th></tr>
-	<tr><th>Number of cartoon </th><th><input type="text" name="noofcarton"></th></tr>
+	<tr><th>Weight</th><th><input type="text" name="weight" placeholder="In kilogram" required pattern="[0-9]{1,3}"> </th></tr>
+	<tr><th>Volume </th><th><input type="text" name="volume" placeholder="In milli meter" required pattern="[0-9]{1,3}"></th></tr>
+	<tr><th>Number of cartoon </th><th><input type="text" name="noofcarton" required pattern="[0-9]{1,3}"></th></tr>
 </table>
     </fieldset>
 
@@ -189,7 +189,7 @@ h2{
     <legend>  Receiver Address</legend>
     
     <table>
-	<tr><th>Name </th><th><input type="text" name="name"></th></tr>
+	<tr><th>Name </th><th><input type="text" name="name" required pattern="[A-Z a-z]{3,25}"></th></tr>
 	<tr><th>Country </th><th><select name="country1" style="width: 240px;">
 	<option>Select</option>
     <?php
@@ -201,12 +201,12 @@ h2{
 	<option value=" <?php echo $row['country']; ?>"> <?php echo $row['country']; ?></option>
     <?php } ?>
 	</select></th></tr>
-    <tr><th>State </th><th><input type="text" name="state1"></th></tr>
-    <tr><th>District </th><th><input type="text" name="district1"></th></tr>
-    <tr><th>City </th><th><input type="text" name="city1"></th></tr>
-    <tr><th>Pincode </th><th><input type="text" name="pin1"></th></tr>
-	<tr><th>Phone Number</th><th><input type="text" name="number"></th></tr>
-	<tr><th>Email Id </th><th><input type="text" name="emailid"></th></tr>
+    <tr><th>State </th><th><input type="text" name="state1" required pattern="[A-Z a-z]{3,25}"></th></tr>
+    <tr><th>District </th><th><input type="text" name="district1" required pattern="[A-Z a-z]{3,25}"></th></tr>
+    <tr><th>City </th><th><input type="text" name="city1" required pattern="[A-Z a-z]{3,25}"></th></tr>
+    <tr><th>Zipcode </th><th><input type="text" name="pin1" required ></th></tr>
+	<tr><th>Phone Number</th><th><input type="text" name="number" required pattern="[0-9]{10}"></th></tr>
+	<tr><th>Email Id </th><th><input type="text" name="emailid" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></th></tr>
 </table>
 
     </fieldset>
@@ -224,10 +224,10 @@ h2{
 	<option value=" <?php echo $row['country']; ?>"> <?php echo $row['country']; ?></option>
     <?php } ?>
 	</select></th></tr>
-        <tr><th>State </th><th><input type="text" name="state2"></th></tr>
-        <tr><th>District </th><th><input type="text" name="district2"></th></tr>
-        <tr><th>City </th><th><input type="text" name="city2"></th></tr>
-        <tr><th>Pincode </th><th><input type="text" name="pin2"></th></tr>
+        <tr><th>State </th><th><input type="text" name="state2" required pattern="[A-Z a-z]{3,25}"></th></tr>
+        <tr><th>District </th><th><input type="text" name="district2" required pattern="[A-Z a-z]{3,25}"></th></tr>
+        <tr><th>City </th><th><input type="text" name="city2" required pattern="[A-Z a-z]{3,25}"></th></tr>
+        <tr><th>Zipcode </th><th><input type="text" name="pin2" ></th></tr>
     </table>    
          </textarea>
     

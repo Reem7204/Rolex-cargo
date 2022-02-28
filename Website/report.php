@@ -50,7 +50,7 @@ button {
   margin: 5px 0;*/
   border: none;
   cursor: pointer;
-  width: 40%;
+  width: 20%;
   border-radius: 12px;
 }
 
@@ -79,7 +79,7 @@ th {
 }
 
 
-h2{
+h2,h4{
   padding: 30px;
 }
 
@@ -125,7 +125,6 @@ h2{
                 <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
                 
                 <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
-                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
@@ -141,7 +140,7 @@ h2{
                 <a href="viewhistory.php " class="dropdown-item">History</a>
                 
                 </div></div>
-                <a href="report.php  " class="nav-item nav-link">Report</a>
+                <a href="report.php " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -161,44 +160,111 @@ h2{
     <!-- Navbar End -->
     
 <center>
-    <form action="" method="get">
+    <form action="" method="POST">
 <div class="container">
-<h2>View Cargo Type</h2>
-<!--Search: <input type="text" name="search" style="width: 200px;height: 30px;border: radius 12px;" ><br>-->
+<h2>Monthly Report</h2>
+Month : <select name="month" style="width: 200px;height: 30px;border: radius 12px;" placeholder="MM" >
+    <option >Select</option>
+    <option value="1">January</option>
+    <option value="2">Febrary</option>
+    <option value="3">March</option>
+    <option value="4">April</option>
+    <option value="5">May</option>
+    <option value="6">June</option>
+    <option value="7">July</option>
+    <option value="8">August</option>
+    <option value="9">September</option>
+    <option value="10">October</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+</select>
+Year : <input type="text" name="year" style="width: 200px;height: 30px;border: radius 12px;" placeholder="YYYY">
+<button name="submit" value="submit">Submit</button>
+<br><br>
+
+<h4>Financial Report</h4>
 	<table solid border="1">
   
-  <caption style="caption-side:top;text-align:right;"><button style="background-color: grey;width: 20%" name="add"><a href="addcargotype.php" style="color: black;">+ Add new type</a></button></caption>
+  
     <tr>
-      <td><b>Sl.No.</b></td>
-      <td><b>Cargo type</b></td>
-      <td><b>Description</b></td>
-      <td><b>Amount</b></td>
-      <td></td>
+      <td><b>Income</b></td>
+      <td><b>Expenditure</b></td>
+      <td><b>Profit</b></td>
     </tr>
     
       <?php
-
+if(isset($_POST['submit'])){
+    $m = $_POST['month'];
+    $y = $_POST['year'];
+    $i = 0;
+    $e = 0;
 $con=mysqli_connect('localhost','root','','r1');
 
-$sql="SELECT * FROM cargotype";
+$sql="SELECT SUM(totalcost) FROM `booking` WHERE YEAR(date) = $y AND MONTH(date) = $m";
 
 $result = mysqli_query($con,$sql);
-$s=1;
+
 
 while($row = mysqli_fetch_array($result)) {
-?>
-    <tr><td><?php echo $s;$s++; ?></td>
-    <td><?php echo $row["name"]; ?></td>
-    <td><?php echo $row["description"]; ?></td>
-    <td><?php echo $row["cost"]; ?></td>
-    
-    <td><button name='update'><a style='color:white;' href='updatecargotype.php?cargo_id=<?php echo $row['cargo_id'];?>'>Update</a></button> <button name='delete'><a style='color:white;' href="ctypedelete.php?id=<?php echo $row['cargo_id']; ?>">Delete</button></td></tr>
-<?php  
+    $i = $row["SUM(totalcost)"];
 }
+
 ?>
+    <td><?php echo $i; ?></td>
+<?php
+$sql2="SELECT SUM(amount) FROM `expense` WHERE YEAR(date) = $y AND MONTH(date) = $m ";
+$result2=mysqli_query($con,$sql2);
+while($row2 = mysqli_fetch_array($result2)) {
+    $e = $row2["SUM(amount)"];
+    ?>
+    <td><?php echo $e; } ?></td>
+    <td><?php echo $i-$e;  ?></td>
+  
+   
+
  
  
     
+</table>
+<h4>Report of cargo</h4>
+<table solid border="1">
+    <tr><td><b>Number of cargo</b></td>
+    <td><b>Delivered cargo</b></td>
+    <td><b>Package on hold</b></td>
+    <td><b>Air freight</b></td>
+    <td><b>Ship Freight</b></td></tr>
+    <?php
+$sql3="SELECT COUNT(track_id) FROM `booking` WHERE YEAR(date) = $y AND MONTH(date) = $m ";
+$result3=mysqli_query($con,$sql3);
+while($row3 = mysqli_fetch_array($result3)) {  
+?>
+<tr><td><?php echo $row3['COUNT(track_id)']; }?></td>
+<?php
+$sql4="SELECT COUNT(track_id) FROM `tracking` WHERE YEAR(date) = $y AND MONTH(date) = $m AND `status`='Delivered'";
+$result4=mysqli_query($con,$sql4);
+while($row4 = mysqli_fetch_array($result4)){
+    ?>
+
+<td><?php echo $row4['COUNT(track_id)']; }?></td>
+<?php
+$sql5="SELECT COUNT(track_id) FROM `onhold_p` WHERE YEAR(date) = $y AND MONTH(date) = $m";
+$result5=mysqli_query($con,$sql5);
+while($row5 = mysqli_fetch_array($result5)){
+    ?>
+<td><?php echo $row5['COUNT(track_id)']; }?></td>
+<?php 
+$sql6="SELECT COUNT(track_id) FROM `booking` WHERE YEAR(date) = $y AND MONTH(date) = $m AND `mode`='air'";
+$result6=mysqli_query($con,$sql6);
+while($row6 = mysqli_fetch_array($result6)){
+    ?>
+<td><?php echo $row6['COUNT(track_id)']; }?></td>
+<?php 
+$sql7="SELECT COUNT(track_id) FROM `booking` WHERE YEAR(date) = $y AND MONTH(date) = $m AND `mode`='ship'";
+$result7=mysqli_query($con,$sql7);
+while($row7 = mysqli_fetch_array($result7)){
+    ?>
+<td><?php echo $row7['COUNT(track_id)']; } }?></td>
+</tr>
 </table>
 </div>
 </form>
@@ -255,13 +321,8 @@ while($row = mysqli_fetch_array($result)) {
         <div class="container">
             <div class="copyright">
                 <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                    </div>
+                    
+                    
                 </div>
             </div>
         </div>

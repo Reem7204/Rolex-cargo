@@ -29,6 +29,87 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+fieldset {border: 2px solid #f1f1f1;
+width: 50%;}
+
+legend {
+  background-color: lightgray;
+  color: white;
+  padding: 5px 10px;
+}
+
+select ,input[type=text], input[type=password] {
+  /*width: 100%;*/
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #f44336;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+
+.container {
+  padding: 10px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+
+@media screen and (max-width: 500px) {
+  /*span.psw {
+     display: block;
+     float: none;
+  }*/
+  
+  
+}
+
+.browser {
+  margin: 10px;
+  padding: 5px;
+}
+
+.browser {
+  background: #FA8072;
+  width: 500px;
+}
+
+/*.browser2 {
+  background: #FA8072;
+  width: 600px;
+}*/
+
+.browser > h2, p {
+  margin: 4px;
+  font-size: 90%;
+}
+
+h2{
+  padding: 30px;
+}
+
+
+</style>
 </head>
 
 <body>
@@ -51,11 +132,42 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <!--<a href="index.html" class="nav-item nav-link">Home</a>-->
-                <a href="bookaservice.php" class="nav-item nav-link">Book a service</a>
-                <a href="viewtracking.php" class="nav-item nav-link">View Tracking</a>
-                <a href="#services" class="nav-item nav-link">View History</a>
-                <a href="viewprofile.php" class="nav-item nav-link">View Profile</a>
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href=" shippmententry.php" class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
+                <a href="addexpense.php " class="dropdown-item">Expense</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
+                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="airfreight.php " class="dropdown-item">Air Freight</a>
+                
+                <a href="shipfreight.php " class="dropdown-item">Ship Freight</a>
+                </div></div>
+
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">View</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="warehousepackages.php " class="dropdown-item">Warehouse packages</a>
+                <a href="viewhistory.php " class="dropdown-item">History</a>
+                
+                </div></div>
+                <a href="report.php  " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -67,15 +179,96 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>-->
-                
                 <a href="index.html" class="nav-item nav-link">Logout</a>
             </div>
-            
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
         </div>
     </nav>
     <!-- Navbar End -->
+    <center>
+    
+    <form method="post">
+    
+    <h2>    Details of track id </h2>
+    <fieldset> <legend> Package details</legend>
+    <?php
+        $con = mysqli_connect("localhost","root","","r1");
+        $id = $_GET['track_id'];
+        
+        $sql1 = "SELECT * FROM booking where track_id = $id";
+        $result = mysqli_query($con,$sql1);
+        while($row = mysqli_fetch_array($result)) {
+            ?>
+    
+    <table>
+        <tr><th>Track id : </th><th><?php echo $row["track_id"]; ?></th></tr>
+        <tr><th> Cargo Type : </th><th><?php echo $row['cargo_id']; ?></th></tr>
+        <tr><th>Weight : </th><th><?php echo $row["weight"]; ?></th></tr>
+        <tr><th>Volume : </th><th><?php echo $row["volume"]; ?></th></tr>
+        <tr><th>No. of carton : </th><th><?php echo $row["noofcarton"]; ?></th></tr>
+        <tr><th>Date of booking : </th><th><?php echo $row['date']; ?></th></tr>
+        </table>
+        </fieldset>
+        <fieldset>
+            <legend>Sender details</legend>
+            <table>
+        <?php
+        $s_id = $row["sender_id"];
+        $sql2 = "SELECT * FROM `customers` WHERE `cust_id`='$s_id'";
+        $result2 = mysqli_query($con,$sql2);
+        while($row2 = mysqli_fetch_array($result2)){ ?>
+        <tr><th>Name : </th><th><?php echo $row2['name']; ?></th></tr>
+        <tr><th>Address : </th><th><?php echo $row2['address']; ?></th></tr>
+        <tr><th>Phone number : </th><th><?php echo $row2['phone_no']; ?></th></tr>
+        <tr><th>Emailid : </th><th><?php echo $row2['emailid']; ?></th></tr>
+        <?php }
+        ?>
+        </table>
+        </fieldset>
+        <fieldset>
+            <legend>Receiver details</legend>
+            <table>
+        <tr><th>Name : </th><th><?php echo $row['r_name']; ?></th></tr>
+        <tr><th>Phone number : </th><th><?php echo $row['r_phoneno']; ?></th></tr>
+        <tr><th>Emailid : </th><th><?php echo $row['r_emailid']; ?></th></tr>
+        </table>
+        </fieldset>
 
-<center><h1 style="padding: 60px;">WELCOME</h1></center>
+        <fieldset>
+            <legend>Departure</legend>
+            <table>
+        <tr><th>Country : </th><th><?php echo $row["r_country"]; ?></th></tr>
+        <tr><th>State : </th><th><?php echo $row["r_state"]; ?></th></tr>
+        <tr><th>District : </th><th><?php echo $row["r_district"]; ?></th></tr>
+        <tr><th>City : </th><th><?php echo $row["r_city"]; ?></th></tr>
+        <tr><th>Zipcode : </th><th><?php echo $row["r_pincode"]; ?></th></tr>
+        </table>
+        </fieldset>
+
+        <fieldset>
+            <legend>Arrival</legend>
+            <table>
+            <tr><th>Country : </th><th><?php echo $row["p_country"]; ?></th></tr>
+        <tr><th>State : </th><th><?php echo $row["p_state"]; ?></th></tr>
+        <tr><th>District : </th><th><?php echo $row["p_district"]; ?></th></tr>
+        <tr><th>City : </th><th><?php echo $row["p_city"]; ?></th></tr>
+        <tr><th>Zipcode : </th><th><?php echo $row["p_pincode"]; ?></th></tr>
+        </table>
+        </fieldset>
+
+
+            <fieldset>
+                <legend>Total Amount</legend>
+                
+        <?php echo $row["totalcost"]; ?> 
+        </fieldset>
+    <?php
+        }
+        ?>
+    </fieldset>
+    <a href="bookaservice.php">Go back </a>
+    </form>
+</center>
 
 
 <!-- Footer Start -->
@@ -160,7 +353,3 @@
 </body>
 
 </html>
-
-
-
-

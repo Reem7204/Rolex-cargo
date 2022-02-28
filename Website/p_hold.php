@@ -1,7 +1,24 @@
+<?php
+// Start the session
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
-<head> 
+<head>
+     
+<?php
+/*$con=mysqli_connect('localhost','root','','r1');
+$id=$_GET['cargo_id'];
+$sql="SELECT * FROM `cargotype` where cargo_id=$id";
+while($row = mysqli_query($dbconnect,$sql)){
+    $cname=$row['name'];
+    $desc=$row['description'];
+    $amt=$row['cost'];
+
+    
+}*/
+?>
     <meta charset="utf-8">
     <title>Rolex Cargo Services</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -29,11 +46,64 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  /*width: 100%;*/
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #f44336;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+
+.container {
+  padding: 10px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+h2{
+  padding: 30px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+
+@media screen and (max-width: 500px) {
+  /*span.psw {
+     display: block;
+     float: none;
+  }*/
+  
+  
+}
+
+</style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -51,11 +121,41 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <!--<a href="index.html" class="nav-item nav-link">Home</a>-->
-                <a href="bookaservice.php" class="nav-item nav-link">Book a service</a>
-                <a href="viewtracking.php" class="nav-item nav-link">View Tracking</a>
-                <a href="#services" class="nav-item nav-link">View History</a>
-                <a href="viewprofile.php" class="nav-item nav-link">View Profile</a>
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href="shippmententry.php " class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
+                <a href="addexpense.php " class="dropdown-item">Expense</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
+                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="airfreight.php " class="dropdown-item">Air Freight</a>
+                
+                <a href="shipfreight.php " class="dropdown-item">Ship Freight</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">View</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="warehousepackages.php " class="dropdown-item">Warehouse packages</a>
+                <a href="viewhistory.php " class="dropdown-item">History</a>
+                
+                </div></div>
+                <a href="report.php  " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -67,49 +167,88 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>-->
-                
                 <a href="index.html" class="nav-item nav-link">Logout</a>
             </div>
-            
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
         </div>
     </nav>
     <!-- Navbar End -->
+<?php
+    
 
-<center><h1 style="padding: 60px;">WELCOME</h1></center>
+
+?>
+    
+<?php
+    if(isset($_POST['submit'])){
+        
+        $tid=$_SESSION['t_id'];
+        $r1 = $_POST['reason'];
+        $date = date("Y/m/d");
+
+        $con=mysqli_connect('localhost','root','','r1');
+        $sql3 = "INSERT INTO `onhold_p`(`track_id`, `reason`,`date`) VALUES ('$tid','$r1','$date')";
+        $result3 = mysqli_query($con,$sql3);
+
+        
+        if($result3){
+            echo "<script>alert('Updated successfully');window.location='updatetracking.php'</script>";	
+        }
+    }
+?>
+
+
+<center>
+<form action="" method="post">
+     <h2>Package on hold</h2> 
+    <table>
+    
+        <tr><th>Reason </th>
+        <th> <input type="text" name="reason" required></th></tr>
+
+        </table>
+        <br><br>
+        <button type="submit" name="submit">Submit</button>
+</form>        
+</center>
+
+
+
+
+
 
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s" style="margin-top: 6rem;">
         <div class="container py-5">
-            <div class="row g-1">
+            <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>63rd Street, 
-                        Jeddah Sanayia, Saudi Arabia</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+966 56 876 7817</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>rolexcargojeddah@gmail.com</p>
-                    <!--<div class="d-flex pt-2">
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>-->
+                    </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4" >Services</h4>
+                    <h4 class="text-light mb-4">Services</h4>
                     <a class="btn btn-link" href="">Air Freight</a>
                     <a class="btn btn-link" href="">Sea Freight</a>
                     <a class="btn btn-link" href="">Road Freight</a>
-                    <!--<a class="btn btn-link" href="">Logistic Solutions</a>
-                    <a class="btn btn-link" href="">Industry solutions</a>-->
+                    <a class="btn btn-link" href="">Logistic Solutions</a>
+                    <a class="btn btn-link" href="">Industry solutions</a>
                 </div>
-                <div class="col-lg-3 col-md-6" >
+                <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="#aboutus">About Us</a>
-                    <a class="btn btn-link" href="contact.html">Contact Us</a>
-                    <a class="btn btn-link" href="#services">Our Services</a>
-                    <!--<a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>-->
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Our Services</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>
                 </div>
                 <!--
                 <div class="col-lg-3 col-md-6">
@@ -123,21 +262,19 @@
             -->
             </div>
         </div>
-        <!--
         <div class="container">
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-end">-->
+                    <div class="col-md-6 text-center text-md-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        <!--Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
                     </div>
                 </div>
             </div>
         </div>
-    -->
     </div>
     <!-- Footer End -->
 
@@ -160,7 +297,3 @@
 </body>
 
 </html>
-
-
-
-

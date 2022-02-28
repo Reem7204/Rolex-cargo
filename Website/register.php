@@ -151,7 +151,7 @@ span.psw {
     <tr><th><label for="psw"><b>Password</b></label></th>
     <th><input type="password" name="psw" required></th></tr>
 
-    <tr><th><label for="cpsw"><b>Confirm Password &nbsp</b></label></th>
+    <tr><th><label for="cpsw"><b>Confirm Password </b></label></th>
     <th><input type="password" name="cpsw" required><br></th></tr>
         
     <tr><th></th><th><button type="submit" name="submit">Submit</button><br></th></tr>

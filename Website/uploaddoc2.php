@@ -29,6 +29,53 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  /*width: 100%;*/
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+table {
+  border-collapse: collapse;
+  width: 50%;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+button {
+  background-color: #f44336;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
+
+h2{
+  padding: 30px;
+}
+</style>
 </head>
 
 <body>
@@ -51,11 +98,41 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <!--<a href="index.html" class="nav-item nav-link">Home</a>-->
-                <a href="bookaservice.php" class="nav-item nav-link">Book a service</a>
-                <a href="viewtracking.php" class="nav-item nav-link">View Tracking</a>
-                <a href="#services" class="nav-item nav-link">View History</a>
-                <a href="viewprofile.php" class="nav-item nav-link">View Profile</a>
+                <!--<a href="index.html" class="nav-item nav-link">Dashboard</a>-->
+                <a href="viewrequest.php " class="nav-item nav-link">Requests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Add</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="viewcargotype.php" class="dropdown-item">Cargo Type</a>
+                <a href="viewcontainer.php" class="dropdown-item">Container</a>
+                <a href="shippmententry.php " class="dropdown-item">Shippment Entry</a>
+                <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
+                <a href="addexpense.php " class="dropdown-item">Expense</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
+                
+                <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
+                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="airfreight.php " class="dropdown-item">Air Freight</a>
+                
+                <a href="shipfreight.php " class="dropdown-item">Ship Freight</a>
+                </div></div>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">View</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="warehousepackages.php " class="dropdown-item">Warehouse packages</a>
+                <a href="viewhistory.php " class="dropdown-item">History</a>
+                
+                </div></div>
+                <a href="report.php  " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -67,16 +144,43 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>-->
-                
                 <a href="index.html" class="nav-item nav-link">Logout</a>
             </div>
-            
+            <!--<h4 class="m-0 pe-lg-5 d-none d-lg-block"><i class="fa fa-headphones text-primary me-3"></i>+966 56 876 7817</h4>-->
         </div>
     </nav>
     <!-- Navbar End -->
+<center>
+    <h2>Upload Delivery Note</h2>
+    <form method="post" enctype="multipart/form-data">
+<table>
+    <tr><td>Documents</td><td> <input type="file" name="file" value="file"></td></tr>
+    
 
-<center><h1 style="padding: 60px;">WELCOME</h1></center>
+</table>
+<button name="upload" value="upload">Upload</button>
+</form>
+</center>
+<?php
 
+$con=mysqli_connect('localhost','root','','r1');
+if(isset($_POST['upload'])){
+    $id = $_GET['id'];
+    
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $path = "File/".$fileName;
+        echo $fileName;
+        $query = "UPDATE `document` SET `deliverynote`='$fileName' WHERE track_id='$id'";
+        $run = mysqli_query($con,$query);
+        
+        if($run){
+            move_uploaded_file($fileTmpName,$path);
+            echo "<script>alert('Upload sucessfull');window.location='uploadd_note.php'</script>";
+        }
+        
+    }
+?>
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s" style="margin-top: 6rem;">
@@ -160,7 +264,3 @@
 </body>
 
 </html>
-
-
-
-

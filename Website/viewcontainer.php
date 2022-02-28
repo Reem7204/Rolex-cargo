@@ -62,7 +62,7 @@ button:hover {
 
 table {
   border-collapse: collapse;
-  width: 70%;
+  width: 90%;
 }
 
 th, td {
@@ -115,23 +115,32 @@ h2{
                 <a href="viewcontainer.php" class="dropdown-item">Container</a>
                 <a href=" shippmententry.php" class="dropdown-item">Shippment Entry</a>
                 <a href="clearancedoc.php " class="dropdown-item">Clearance Documents</a>
+                <a href="uploadd_note.php " class="dropdown-item">Delivery Note</a>
+                <a href="addexpense.php " class="dropdown-item">Expense</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Update</a>
                 <div class="dropdown-menu fade-up m-0">
                 <a href="shippingcharge.php " class="dropdown-item">Shipping Charge</a>
                 
-                <a href=" " class="dropdown-item">Update Tracking</a>
+                <a href="updatetracking.php " class="dropdown-item">Update Tracking</a>
+                <a href="viewp_hold.php " class="dropdown-item">Packages on hold</a>
                 </div></div>
                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mode</a>
                 <div class="dropdown-menu fade-up m-0">
-                <a href=" " class="dropdown-item">Air Freight</a>
+                <a href="airfreight.php " class="dropdown-item">Air Freight</a>
                 
-                <a href=" " class="dropdown-item">Ship Freight</a>
+                <a href="shipfreight.php " class="dropdown-item">Ship Freight</a>
                 </div></div>
-                <a href=" " class="nav-item nav-link">Add Expense</a>
-                <a href=" " class="nav-item nav-link">Report</a>
+                <<div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">View</a>
+                <div class="dropdown-menu fade-up m-0">
+                <a href="warehousepackages.php " class="dropdown-item">Warehouse packages</a>
+                <a href="viewhistory.php " class="dropdown-item">History</a>
+                
+                </div></div>
+                <a href="report.php  " class="nav-item nav-link">Report</a>
                <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-up m-0">
@@ -158,12 +167,12 @@ h2{
   
   <caption style="caption-side:top;text-align:right;"><button style="background-color: grey;width: 20%" name="add"><a href="addcontainer.php" style="color: black;">+ Add new type</a></button></caption>
     <tr>
-      <td>Sl.No.</td>
-      <td>Container number</td>
-      <td>Container type</td>
-      <td>Feet</td>
-      <td>Destination</td>
-      <td>Departure date</td>
+      <td><b>Sl.No.</b></td>
+      <td><b>Container number</b></td>
+      <td><b>Container type</b></td>
+      <td><b>Feet</b></td>
+      <td><b>Destination</b></td>
+      <td><b>Departure date</b></td>
       <td></td>
     </tr>
     

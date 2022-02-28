@@ -1,3 +1,7 @@
+<?php
+// Start the session
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +33,60 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  /*width: 100%;*/
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #f44336;
+  color: white;
+  /*padding: 5px 0;
+  margin: 5px 0;*/
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  border-radius: 12px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+
+
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+}
+
+th, td {
+  text-align: center;
+  padding: 10px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
+
+h2{
+  padding: 30px;
+}
+
+</style>
 </head>
 
 <body>
@@ -74,42 +132,87 @@
         </div>
     </nav>
     <!-- Navbar End -->
+    
+<center>
+    <form action="" method="get">
+<div class="container">
+<h2>Tracking Status</h2>
+<!--Search: <input type="text" name="search" style="width: 200px;height: 30px;border: radius 12px;" ><br>-->
+	<table solid border="1">
+  
+  
+    <tr>
+      <td><b>Sl.No.</b></td>
+      <td><b>Track id</b></td>
+      <td><b>Date</b></td>
+      <td><b>Status</b></td>
+      <td></td>
+    </tr>
+    
+    
+      <?php
 
-<center><h1 style="padding: 60px;">WELCOME</h1></center>
+$con=mysqli_connect('localhost','root','','r1');
+$lid=$_SESSION['l_id'];
+$sql="SELECT * FROM tracking WHERE `track_id` IN (SELECT `track_id` FROM `booking` WHERE `sender_id` IN (SELECT `cust_id` FROM `customers` WHERE `login_id`='$lid'))";
+
+$result = mysqli_query($con,$sql);
+$s=1;
+
+while($row = mysqli_fetch_array($result)) {
+?>
+    <tr><td><?php echo $s;$s++; ?></td>
+    <td><?php echo $row["track_id"]; ?></td>
+    <td><?php echo $row["date"]; ?></td>
+    <td><?php echo $row["status"]; ?></td>
+    
+    </tr>
+<?php  
+}
+?>
+ 
+ 
+    
+</table>
+</div>
+</form>
+</center>
+
+
+
 
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s" style="margin-top: 6rem;">
         <div class="container py-5">
-            <div class="row g-1">
+            <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>63rd Street, 
-                        Jeddah Sanayia, Saudi Arabia</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+966 56 876 7817</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>rolexcargojeddah@gmail.com</p>
-                    <!--<div class="d-flex pt-2">
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>-->
+                    </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4" >Services</h4>
+                    <h4 class="text-light mb-4">Services</h4>
                     <a class="btn btn-link" href="">Air Freight</a>
                     <a class="btn btn-link" href="">Sea Freight</a>
                     <a class="btn btn-link" href="">Road Freight</a>
-                    <!--<a class="btn btn-link" href="">Logistic Solutions</a>
-                    <a class="btn btn-link" href="">Industry solutions</a>-->
+                    <a class="btn btn-link" href="">Logistic Solutions</a>
+                    <a class="btn btn-link" href="">Industry solutions</a>
                 </div>
-                <div class="col-lg-3 col-md-6" >
+                <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="#aboutus">About Us</a>
-                    <a class="btn btn-link" href="contact.html">Contact Us</a>
-                    <a class="btn btn-link" href="#services">Our Services</a>
-                    <!--<a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>-->
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Our Services</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>
                 </div>
                 <!--
                 <div class="col-lg-3 col-md-6">
@@ -123,21 +226,19 @@
             -->
             </div>
         </div>
-        <!--
         <div class="container">
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-end">-->
+                    <div class="col-md-6 text-center text-md-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        <!--Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
                     </div>
                 </div>
             </div>
         </div>
-    -->
     </div>
     <!-- Footer End -->
 
@@ -160,7 +261,3 @@
 </body>
 
 </html>
-
-
-
-
